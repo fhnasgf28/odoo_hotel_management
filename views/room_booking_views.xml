@@ -1,0 +1,20 @@
+<odoo>
+  <data>
+
+    <record id="room_booking_view_form" model="ir.ui.view">
+      <field name="name">room.booking.view.form</field>
+      <field name="model">room.booking</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+
+          </header>
+          <sheet>
+
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+  </data>
+</odoo>
