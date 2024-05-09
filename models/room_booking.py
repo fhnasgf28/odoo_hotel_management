@@ -19,8 +19,13 @@ class RoomBooking(models.Model):
                                  help="Creation date of draft/sent orders,"
                                       " Confirmation date of confirmed orders", default=fields.Datetime.now)
     is_checkin = fields.Boolean(default=False, string="Is Checkin", help="sets to True if the room is occupied")
-    maintenance_request_sent = fields.Boolean(default=False, string="Maintenance Request" "or not", help="sets to True if the maintenance request send")
+    maintenance_request_sent = fields.Boolean(default=False, string="Maintenance Request" "or not",
+                                              help="sets to True if the maintenance request send")
     checkin_date = fields.Datetime(string="Check In", help="Date Of CheckIn", default=fields.Datetime.now())
+    checkout_date = fields.Datetime(string="Check Out",
+                                    help="You can choose the date,"
+                                         " Otherwise sets to current Date",
+                                    required=True)
     hotel_policy = fields.Selection([
         ("prepaid", "On Booking"),
         ("manual", "On CheckIn"),
@@ -30,13 +35,68 @@ class RoomBooking(models.Model):
                               help="Number of days which will automatically "
                                    "count from the check-in and check-out "
                                    "date.", )
+    invoice_button_visible = fields.Boolean(string="Invoice Button Display",
+                                            help="Invoice button will be " "visible if this button is ""True")
     state = fields.Selection(selection=
-        [
-            ('draft', 'Draft'),
-            ('reserved', 'Reserved'),
-            ('checkin', 'CheckIn'),
-            ('checkin', 'CheckIn'),
-            ('checkout', 'CheckOut'),
-            ('cancel', 'Cancel'),
-            ('done', 'Done'),
-        ], string='state', help="State of the Booking", default='draft', tracking=True)
+    [
+        ('draft', 'Draft'),
+        ('reserved', 'Reserved'),
+        ('checkin', 'CheckIn'),
+        ('checkin', 'CheckIn'),
+        ('checkout', 'CheckOut'),
+        ('cancel', 'Cancel'),
+        ('done', 'Done'),
+    ], string='state', help="State of the Booking", default='draft', tracking=True)
+    invoice_count = fields.Integer(compute='_compute_invoice_count', string='Invoice count',
+                                   help="The Number of Invoice created")
+    invoice_status = fields.Selection(selection=[('no_invoice', 'Nothing To Invoice'),
+                                                 ('to_invoice', 'To Invoice'),
+                                                 ('invoiced', 'Invoiced'),
+                                                 ], string='Invoice Status', help="Status Of The Invoice",
+                                      default='no_invoice', tracking=True)
+    hotel_invoice_id = fields.Many2one("account.move", string="Invoice", help="Indicates The Invoice", copy=False)
+    duration_visible = fields.Float(string="Duration", help="A Dummy field for Duration")
+    need_service = fields.Boolean(default=False, string="Need Service",
+                                  help="Check if a Service to be added with the booking")
+    need_fleet = fields.Boolean(default=False, string="Need Vehicle",
+                                help="Check if a fleet to be added with the Booking")
+    need_food = fields.Boolean(default=False, string="Need Food", help="Check If A Event to be added with the booking")
+    # service_line_ids = fields.One2many("service.booking.line", "booking_id", string="Service",
+    #                                    help="Hotel services details provided to" "Customer and it will included in" "the main Invoices.")
+    # event_line_ids = fields.One2many('event.booking.line', 'booking_id', string="Event", help="Hotel Event "
+    #                                                                                           "reservation detail.")
+    # vehicle_line_ids = fields.One2many('fleet.booking.line', 'booking_id', string='Hotel room reservation detail.')
+    # room_line_ids = fields.One2many('room.booking.line', 'booking_id', string='Room', help="Hotel Room Reservation "
+    #                                                                                        "detail.")
+    # food_order_line_ids = fields.One2many('food.booking.line', 'booking_id', string='Food',
+    #                                       help="Food details provided"
+    #                                            " to Customer and"
+    #                                            " it will included in the "
+    #                                            "main invoice.", )
+    user_id = fields.Many2one(comodel_name='res.partner', string="Invoice", compute='_compute_user_id',
+                              help='sets the User Automatically', required=True, )  #ada domain
+    pricelist_id = fields.Many2one(comodel_name='product.pricelist', string='Pricelist',
+                                   compute='_compute_pricelist_id', store=True, readonly=False, required=True,
+                                   tracking=1, help="If you change the pricelist,"
+                                                    " only newly added lines"
+                                                    " will be affected.")
+    currency_id = fields.Many2one(string='Currency', help="This is the currency used",
+                                  related='pricelist_id.currency_id', depends=['pricelist_id.currency_id'], )
+    account_move = fields.Integer(string='Invoice Id', help='Id of the invoices created')
+    amount_tax = fields.Monetary(string='Taxes', help='Total Tax Amount', store=True, compute='_compute_amount_untaxed',
+                                 tracking=4)
+
+    def action_view_invoices(self):
+        return
+
+    #     action reserve
+    def action_reserve(self):
+        return
+
+    #     action check-in
+    def action_checkin(self):
+        return
+
+    # action maintenance request
+    def action_maintenance_request(self):
+        return

@@ -18,17 +18,18 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base', 'mail', 'account', 'event', 'fleet', 'lunch'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
         'views/room_booking_views.xml',
-        'views/templates.xml',
+        'views/hotel_menu_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
+    'application':True
 }
 

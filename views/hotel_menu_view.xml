@@ -1,0 +1,28 @@
+<odoo>
+  <data>
+
+<!--    Main menu-->
+    <menuitem id="hotel_management_menu_root"
+              name="Hotel Management"
+              web_icon="hotel_management,static/description/icon.png"
+              sequence="10"
+    />
+<!--      configuration menu-->
+    <menuitem id="hotel_config_menu"
+              name="Configuration"
+              sequence="50"
+              parent="hotel_management_menu_root"/>
+<!--      food menu-->
+    <menuitem id="food_menu"
+              name="Food"
+              sequence="20"
+              parent="hotel_management_menu_root"/>
+<!--      fleet menu-->
+    <menuitem id="fleet_vehicle_menu"
+              name="Vehicle"
+              sequence="30"
+              parent="hotel_management_menu_root"/>
+
+
+  </data>
+</odoo>
