@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
   <data>
 
@@ -34,8 +35,29 @@
                 <field name="duration_visible" invisible="1"/>
                 <field name="invoice_button_visible" invisible="1"/>
                 <field name="maintenance_request_sent" invisible="1"/>
+<!--                <group>-->
+<!--                    -->
+<!--                </group>-->
+               <group>
+                   <field name="date_order"/>
+                   <field name="pricelist_id"/>
+                   <field name="need_service" invisible=" state not in ['check_in']"/>
+                   <field name="need_fleet" invisible=" state not in ['check_in']"/>
+                   <field name="need_food" invisible=" state not in ['check_in']"/>
+                   <field name="need_event" invisible=" state not in ['check_in']"/>
+               </group>
             </group>
+            <notebook>
+                <page name="folio" string="Folio">
+                    <field name="room_line_ids" colspan="4" string="Room Lines">
+<!--                        context-->
+                        <tree editable="bottom">
+                            
+                        </tree>
+                    </field>
 
+                </page>
+            </notebook>
           </sheet>
         </form>
       </field>
@@ -59,7 +81,7 @@
           <field name="name">Room Booking</field>
           <field name="type">ir.actions.act_window</field>
           <field name="res_model">room.booking</field>
-          <field name="view_mode">tree</field>
+          <field name="view_mode">tree,form</field>
       </record>
 
 <!--      Reservation Menu-->

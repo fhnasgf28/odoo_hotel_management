@@ -61,6 +61,9 @@ class RoomBooking(models.Model):
     need_fleet = fields.Boolean(default=False, string="Need Vehicle",
                                 help="Check if a fleet to be added with the Booking")
     need_food = fields.Boolean(default=False, string="Need Food", help="Check If A Event to be added with the booking")
+    need_event = fields.Boolean(default=False, string="Need Event",
+                                help="Check if a Event to be added with"
+                                     " the Booking")
     # service_line_ids = fields.One2many("service.booking.line", "booking_id", string="Service",
     #                                    help="Hotel services details provided to" "Customer and it will included in" "the main Invoices.")
     # event_line_ids = fields.One2many('event.booking.line', 'booking_id', string="Event", help="Hotel Event "
@@ -85,6 +88,19 @@ class RoomBooking(models.Model):
     account_move = fields.Integer(string='Invoice Id', help='Id of the invoices created')
     amount_tax = fields.Monetary(string='Taxes', help='Total Tax Amount', store=True, compute='_compute_amount_untaxed',
                                  tracking=4)
+    amount_untaxed = fields.Monetary(string='Total Untaxed Amount', help='This indicates the total untaxed''amount', store=True)
+    amount_total = fields.Monetary(string="Total", store=True, help="The total Amount including Tax", compute='_compute_amount_untaxed', tracking=4)
+    amount_untaxed_room = fields.Monetary(string="Room Untaxed", help='Untaxed Amount for Room', compute='_compute_amount_untaxed',tracking=5)
+    amount_untaxed_food = fields.Monetary(string='Event Tax', help='Tax for event', compute='_compute_amount_untaxed', tracking=5)
+    amount_taxed_event = fields.Monetary(string='Event Tax', help='Tax For Event', compute='_compute_amount_untaxed', tracking=5)
+    amount_taxed_service = fields.Monetary(string='Service Tax', compute='_compute_amount_untaxed')
+    amount_taxed_fleet = fields.Monetary(string='Fleet Tax', compute='_compute_amount_untaxed', help='This is the Total Amount for''Room', tracking=5)
+    amount_total_event = fields.Monetary(string='Total Amount for Event', compute='_compute_amount_untaxed', help="This is the Total Amount for "
+                                              "Event", tracking=5)
+    amount_total_service = fields.Monetary(string='Total Amount for Service', compute='_compute_amount_untaxed', help='This is the Total Amount for''Fleet', tracking=5)
+    amount_total_fleet = fields.Monetary(string='Total Amount for Fleet', compute='_compute_amount_untaxed', help="This is the Total Amount for "
+                                              "Fleet", tracking=5)
+
 
     def action_view_invoices(self):
         return
@@ -100,3 +116,8 @@ class RoomBooking(models.Model):
     # action maintenance request
     def action_maintenance_request(self):
         return
+
+    # amount total
+    def _compute_amount_untaxed(self):
+        return
+
