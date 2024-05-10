@@ -69,8 +69,8 @@ class RoomBooking(models.Model):
     # event_line_ids = fields.One2many('event.booking.line', 'booking_id', string="Event", help="Hotel Event "
     #                                                                                           "reservation detail.")
     # vehicle_line_ids = fields.One2many('fleet.booking.line', 'booking_id', string='Hotel room reservation detail.')
-    # room_line_ids = fields.One2many('room.booking.line', 'booking_id', string='Room', help="Hotel Room Reservation "
-    #                                                                                        "detail.")
+    room_line_ids = fields.One2many('room.booking.line', 'booking_id', string='Room', help="Hotel Room Reservation "
+                                                                                           "detail.")
     # food_order_line_ids = fields.One2many('food.booking.line', 'booking_id', string='Food',
     #                                       help="Food details provided"
     #                                            " to Customer and"
