@@ -52,7 +52,7 @@
                     <field name="room_line_ids" colspan="4" string="Room Lines">
 <!--                        context-->
                         <tree editable="bottom">
-                            <field name="room_id" string="Room" required="1"/>
+<!--                            <field name="room_id" string="Room" required="1"/>-->
                             <field name="checkin_date"/>
                             <field name="booking_line_visible" invisible="1"/>
                             <field name="checkout_date"/>
