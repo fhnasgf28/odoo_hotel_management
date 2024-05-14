@@ -25,6 +25,8 @@ Long description of module's purpose
         'security/ir.model.access.csv',
         'views/room_booking_views.xml',
         'views/hotel_menu_view.xml',
+        'views/hotel_room_views.xml',
+        'views/hotel_floor_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

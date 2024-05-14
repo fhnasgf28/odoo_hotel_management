@@ -23,8 +23,8 @@ class HotelRoom(models.Model):
     room_image = fields.Image(string='Room Image', max_width=1920, max_height=1920, help='Image of the room')
     # taxes_ids = fields.Many2one('account.tax', 'hotel_room_taxes_rel', 'room_id', 'tax_id', help='Default taxes used when selling the''room', string='Customer Taxes', domain=[('type_tax_use', '=', 'sale')], default=lambda self: self.env.company.account_sale_tax.id)
     # room_amenities_ids = fields.Many2one("hotel.amenity", string='Room Amenities', help='List of room amenities')
-    # floor_id = fields.Many2one('hotel.floor', string='FLoor', help='Automatically selects the manager', tracking=True)
-    # user_id = fields.Many2one('res.users', string='User',related='floor_id.user_id', help='Automatically selects the manager')
+    floor_id = fields.Many2one('hotel.floor', string='FLoor', help='Automatically selects the manager', tracking=True)
+    user_id = fields.Many2one('res.users', string='User',related='floor_id.user_id', help='Automatically selects the manager')
     room_type = fields.Selection([('single', 'Single'),
                                   ('double', 'Double'),
                                   ('dormitory', 'Dormitory')],

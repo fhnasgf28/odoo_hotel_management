@@ -2,4 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_room_booking_user,access.room.booking.user,model_room_booking,,1,1,1,1
 access_room_booking_line_user,access.room.booking.line.user,model_room_booking_line,base.group_user,1,1,1,1
 access_room_hotel_user,access.room.hotel.user,model_hotel_room,base.group_user,1,1,1,1
-,
+access_hotel_floor_user,access.hotel.floor.user,model_hotel_floor,base.group_user,1,1,1,1
