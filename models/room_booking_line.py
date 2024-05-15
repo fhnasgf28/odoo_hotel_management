@@ -18,8 +18,23 @@ class RoomBookingLine(models.Model):
     #     room id
     uom_qty = fields.Float(string="Duration", help="The Quantity converted into the UoM used by""the Product", readonly=True)
     uom_id = fields.Many2one('uom.uom', string='Unit Of Measure', help='This Will set the unit of measure used', readonly=True)
+    room_id = fields.Many2one('hotel.room', string='Room', domain=[('status', '=', 'available')], help='the Quantity converted into th UoM used by the product', readonly=True)
+
 
     # booking line visible
     booking_line_visible = fields.Boolean(default=False,string="Booking Line Visible",
                                               help="If True, then Booking Line "
                                                    "will be visible")
+#     price_unit
+    price_unit = fields.Float(related='room_id.list_price', string='Rent',digits='Product Price', help='The Rent price of the selected room')
+    tax_ids = fields.Many2many('account.tax',
+                               string='Taxes',
+                               help="Default taxes used when selling the room."
+                               , domain=[('type_tax_use', '=', 'sale')])
+    price_subtotal = fields.Float(string='Subtotal',
+                                  compute='_compute_price_subtotal',
+                                  help='Total Price Excluding Tax',
+                                  store=True)
+
+    def _compute_price_subtotal(self):
+        return

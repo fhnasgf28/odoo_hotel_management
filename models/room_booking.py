@@ -88,25 +88,44 @@ class RoomBooking(models.Model):
     account_move = fields.Integer(string='Invoice Id', help='Id of the invoices created')
     amount_tax = fields.Monetary(string='Taxes', help='Total Tax Amount', store=True, compute='_compute_amount_untaxed',
                                  tracking=4)
-    amount_untaxed = fields.Monetary(string='Total Untaxed Amount', help='This indicates the total untaxed''amount', store=True)
-    amount_total = fields.Monetary(string="Total", store=True, help="The total Amount including Tax", compute='_compute_amount_untaxed', tracking=4)
-    amount_untaxed_room = fields.Monetary(string="Room Untaxed", help='Untaxed Amount for Room', compute='_compute_amount_untaxed',tracking=5)
-    amount_untaxed_food = fields.Monetary(string='Event Tax', help='Tax for event', compute='_compute_amount_untaxed', tracking=5)
-    amount_taxed_event = fields.Monetary(string='Event Tax', help='Tax For Event', compute='_compute_amount_untaxed', tracking=5)
+    amount_untaxed = fields.Monetary(string='Total Untaxed Amount', help='This indicates the total untaxed''amount',
+                                     store=True)
+    amount_total = fields.Monetary(string="Total", store=True, help="The total Amount including Tax",
+                                   compute='_compute_amount_untaxed', tracking=4)
+    amount_untaxed_room = fields.Monetary(string="Room Untaxed", help='Untaxed Amount for Room',
+                                          compute='_compute_amount_untaxed', tracking=5)
+    amount_untaxed_food = fields.Monetary(string='Event Tax', help='Tax for event', compute='_compute_amount_untaxed',
+                                          tracking=5)
+    amount_taxed_event = fields.Monetary(string='Event Tax', help='Tax For Event', compute='_compute_amount_untaxed',
+                                         tracking=5)
     amount_taxed_service = fields.Monetary(string='Service Tax', compute='_compute_amount_untaxed')
-    amount_taxed_fleet = fields.Monetary(string='Fleet Tax', compute='_compute_amount_untaxed', help='This is the Total Amount for''Room', tracking=5)
-    amount_total_event = fields.Monetary(string='Total Amount for Event', compute='_compute_amount_untaxed', help="This is the Total Amount for "
+    amount_taxed_fleet = fields.Monetary(string='Fleet Tax', compute='_compute_amount_untaxed',
+                                         help='This is the Total Amount for''Room', tracking=5)
+    amount_total_event = fields.Monetary(string='Total Amount for Event', compute='_compute_amount_untaxed',
+                                         help="This is the Total Amount for "
                                               "Event", tracking=5)
-    amount_total_service = fields.Monetary(string='Total Amount for Service', compute='_compute_amount_untaxed', help='This is the Total Amount for''Fleet', tracking=5)
-    amount_total_fleet = fields.Monetary(string='Total Amount for Fleet', compute='_compute_amount_untaxed', help="This is the Total Amount for "
+    amount_total_service = fields.Monetary(string='Total Amount for Service', compute='_compute_amount_untaxed',
+                                           help='This is the Total Amount for''Fleet', tracking=5)
+    amount_total_fleet = fields.Monetary(string='Total Amount for Fleet', compute='_compute_amount_untaxed',
+                                         help="This is the Total Amount for "
                                               "Fleet", tracking=5)
 
+    #sequence
+    @api.model
+    def create(self, vals_list):
+        ''' sequence Generation'''
+        if vals_list.get('name', 'New') == 'New':
+            vals_list['name'] = self.env['ir.sequence'].next_by_code('room.booking')
+        return super().create(vals_list)
 
     def action_view_invoices(self):
         return
 
     #     action reserve
     def action_reserve(self):
+        return
+
+    def action_cancel(self):
         return
 
     #     action check-in
@@ -121,3 +140,11 @@ class RoomBooking(models.Model):
     def _compute_amount_untaxed(self):
         return
 
+    def action_done(self):
+        return
+
+    def action_checkout(self):
+        return
+
+    def action_invoice(self):
+        return
