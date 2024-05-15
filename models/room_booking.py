@@ -118,6 +118,12 @@ class RoomBooking(models.Model):
             vals_list['name'] = self.env['ir.sequence'].next_by_code('room.booking')
         return super().create(vals_list)
 
+    def _compute_user_id(self):
+        '''Compute the user id'''
+        for order in self:
+            order.user_id = \
+                order.partner_id.address_get(['invoice'])[
+                    'invoice'] if order.partner_id else False
     def action_view_invoices(self):
         return
 

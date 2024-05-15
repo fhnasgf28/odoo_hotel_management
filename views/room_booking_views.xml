@@ -10,7 +10,10 @@
           <header>
             <button name="action_reserve" string="Reserve" invisible="state != 'draft'" type="object" class="btn-primary"/>
             <button name="action_checkin" string="Check-In" type="object" class="btn-primary"/>
-            <button name="action_maintenance_request" string="Maintenance Request" type="object" class="btn-primary" />
+            <button name="action_maintenance_request" string="Maintenance Request" type="object"
+                    class="btn-primary"
+                    invisible="maintenance_request_sent == True or ( state not in ['check_in', 'reserved'])"
+            />
               <button name="action_checkout" string="Check-Out"
                             class="btn-primary" invisible="state != 'check_in'"
                             type="object"/>
@@ -20,7 +23,7 @@
                       invisible="state != 'check_out'" type="object"/>
               <button name="action_invoice" string="Create Invoice" type="object" class="btn-primary" invisible="state not in ['draft', 'check_out'] or invoice_button_visible == True"/>
               <button name="action_cancel" string="Cancel" invisible="state not in ['draft', 'reserved']" type="object" class="btn-secondary"/>
-            <field name="state" select="2" widget="statusbar" statubar_visible="draft,check_in,check_out,done"/>
+            <field name="state" select="2" widget="statusbar" statusbar_visible="draft,check_in,check_out,done"/>
             <field name="invoice_status" select="2" widget="statusbar" invisible="1"/>
           </header>
           <sheet>
@@ -68,7 +71,10 @@
                     <field name="room_line_ids" colspan="4" string="Room Lines">
 <!--                        context-->
                         <tree editable="bottom">
-<!--                            <field name="room_id" string="Room" required="1"/>-->
+                            <field name="room_id" string="Room"
+                                   required="1"
+                                   domain="[('is_room_avail', '=',True)]"
+                                   />
                             <field name="checkin_date"/>
                             <field name="booking_line_visible" invisible="1"/>
                             <field name="checkout_date"/>
@@ -85,6 +91,8 @@
                                    widget="many2many_tags"/>
                             <field name="price_subtotal" widget="monetary"
                                    readonly="booking_line_visible == True"/>
+                            <field groups="account.group_account_manager" name="price_total"
+                                   widget="monetary" readonly="booking_line_visible == True"/>
                         </tree>
                     </field>
                 </page>

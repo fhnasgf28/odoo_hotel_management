@@ -35,6 +35,8 @@ class RoomBookingLine(models.Model):
                                   compute='_compute_price_subtotal',
                                   help='Total Price Excluding Tax',
                                   store=True)
+    price_total = fields.Float(string='Total', compute='_compute_price_subtotal',
+                               help='Total Price including Tax', store=True)
 
     def _compute_price_subtotal(self):
         return
