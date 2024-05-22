@@ -28,6 +28,11 @@ Long description of module's purpose
         'views/hotel_menu_view.xml',
         'views/hotel_room_views.xml',
         'views/hotel_floor_views.xml',
+        'views/lunch_product_views.xml',
+        'views/hotel_amenity_views.xml',
+        'views/hotel_service_views.xml',
+        'views/fleet_vehicle_model_views.xml',
+        # 'views/lunch_product_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

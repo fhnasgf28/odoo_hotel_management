@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+<!--    product menu action-->
+    <record id="lunch_product_action" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="res_model">lunch.product</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+<!--    vendor menu action-->
+    <record id="lunch_supplier_action" model="ir.actions.act_window">
+        <field name="name">Vendors</field>
+        <field name="res_model">lunch.supplier</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+<!--    product menu-->
+    <menuitem id="lunch_product_menu"
+              name="Product"
+              action="lunch_product_action"
+              parent="food_menu"
+              sequence="10"/>
+
+<!--    vendor menu-->
+    <menuitem id="lunch_supplier_menu"
+              name="Vendors"
+              action="lunch_supplier_action"
+              parent="food_menu"
+              sequence="20"/>
+</odoo>
