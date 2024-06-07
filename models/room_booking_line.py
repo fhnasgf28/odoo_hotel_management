@@ -6,37 +6,66 @@ class RoomBookingLine(models.Model):
     _name = "room.booking.line"
     _description = "Hotel Folio Line"
 
-    # @tools.ormchache()
-    # def _set_default_uom_id(self):
-    #     return self.env.ref['uom.product_uom_day']
+    @tools.ormcache()
+    def _set_default_uom_id(self):
+        return self.env.ref('uom.product_uom_day')
 
-    booking_id = fields.Many2one("room.booking", string='Booking', help='Indicates The Room')
-    checkin_date = fields.Datetime(string="Check In", help="you can choose the date,""otherwise sets to current Date",required=True)
-    checkout_date = fields.Datetime(string="Check Out",help="You can choose the date,"
+    booking_id = fields.Many2one("room.booking", string="Booking",
+                                 help="Indicates the Room",
+                                 ondelete="cascade")
+    checkin_date = fields.Datetime(string="Check In",
+                                   help="You can choose the date,"
+                                        " Otherwise sets to current Date",
+                                   required=True)
+    checkout_date = fields.Datetime(string="Check Out",
+                                    help="You can choose the date,"
                                          " Otherwise sets to current Date",
                                     required=True)
-    #     room id
-    uom_qty = fields.Float(string="Duration", help="The Quantity converted into the UoM used by""the Product", readonly=True)
-    uom_id = fields.Many2one('uom.uom', string='Unit Of Measure', help='This Will set the unit of measure used', readonly=True)
-    room_id = fields.Many2one('hotel.room', string='Room', domain=[('status', '=', 'available')], help='the Quantity converted into th UoM used by the product', readonly=True)
-
-
-    # booking line visible
-    booking_line_visible = fields.Boolean(default=False,string="Booking Line Visible",
-                                              help="If True, then Booking Line "
-                                                   "will be visible")
-#     price_unit
-    price_unit = fields.Float(related='room_id.list_price', string='Rent',digits='Product Price', help='The Rent price of the selected room')
-    tax_ids = fields.Many2many('account.tax',
-                               string='Taxes',
-                               help="Default taxes used when selling the room."
-                               , domain=[('type_tax_use', '=', 'sale')])
-    price_subtotal = fields.Float(string='Subtotal',
+    room_id = fields.Many2one('hotel.room', string="Room",
+                              domain=[('status', '=', 'available')],
+                              help="Indicates the Room",
+                              required=True)
+    uom_qty = fields.Float(string="Duration",
+                           help="The quantity converted into the UoM used by "
+                                "the product", readonly=True)
+    uom_id = fields.Many2one('uom.uom',
+                             default=_set_default_uom_id,
+                             string="Unit of Measure",
+                             help="This will set the unit of measure used",
+                             readonly=True)
+    price_unit = fields.Float(related='room_id.list_price', string='Rent',
+                              digits='Product Price',
+                              help="The rent price of the selected room.")
+    # tax_ids = fields.Many2many('account.tax',
+    #                            'hotel_room_order_line_taxes_rel',
+    #                            'room_id', 'tax_id',
+    #                            related='room_id.taxes_ids',
+    #                            string='Taxes',
+    #                            help="Default taxes used when selling the room."
+    #                            , domain=[('type_tax_use', '=', 'sale')])
+    currency_id = fields.Many2one(string='Currency',
+                                  related='booking_id.pricelist_id.currency_id'
+                                  , help='The currency used')
+    price_subtotal = fields.Float(string="Subtotal",
                                   compute='_compute_price_subtotal',
-                                  help='Total Price Excluding Tax',
+                                  help="Total Price excluding Tax",
                                   store=True)
-    price_total = fields.Float(string='Total', compute='_compute_price_subtotal',
-                               help='Total Price including Tax', store=True)
+    price_tax = fields.Float(string="Total Tax",
+                             compute='_compute_price_subtotal',
+                             help="Tax Amount",
+                             store=True)
+    price_total = fields.Float(string="Total",
+                               compute='_compute_price_subtotal',
+                               help="Total Price including Tax",
+                               store=True)
+    state = fields.Selection(related='booking_id.state',
+                             string="Order Status",
+                             help=" Status of the Order",
+                             copy=False)
+    booking_line_visible = fields.Boolean(default=False,
+                                          string="Booking Line Visible",
+                                          help="If True, then Booking Line "
+                                               "will be visible")
 
     def _compute_price_subtotal(self):
-        return
+        pass

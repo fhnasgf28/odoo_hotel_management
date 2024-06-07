@@ -64,17 +64,19 @@
                 </form>
             </field>
         </record>
-<!--        hotel room menu action-->
-        <record id="hotel_room_action" model="ir.actions.act_window">
-            <field name="name">Rooms</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">hotel.room</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{'default_is_room_avail':True}</field>
-        </record>
-
-<!--        room meny-->
-        <menuitem id="hotel_room_menu" name="Room" action="hotel_room_action" parent="hotel_config_menu" sequence="20"/>
-
+<!--    Hotel Room menu action-->
+    <record id="hotel_room_action" model="ir.actions.act_window">
+        <field name="name">Rooms</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hotel.room</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'default_is_room_avail':True}</field>
+    </record>
+    <!--Room Menu-->
+    <menuitem id="hotel_room_menu"
+              name="Room"
+              action="hotel_room_action"
+              parent="hotel_config_menu"
+              sequence="20"/>
     </data>
 </odoo>

@@ -1,20 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <data>
-
+    <!--     Room Booking Form View -->
     <record id="room_booking_view_form" model="ir.ui.view">
-      <field name="name">room.booking.view.form</field>
-      <field name="model">room.booking</field>
-      <field name="arch" type="xml">
-        <form>
-          <header>
-            <button name="action_reserve" string="Reserve" invisible="state != 'draft'" type="object" class="btn-primary"/>
-            <button name="action_checkin" string="Check-In" type="object" class="btn-primary"/>
-            <button name="action_maintenance_request" string="Maintenance Request" type="object"
-                    class="btn-primary"
-                    invisible="maintenance_request_sent == True or ( state not in ['check_in', 'reserved'])"
-            />
-              <button name="action_checkout" string="Check-Out"
+        <field name="name">room.booking.view.form</field>
+        <field name="model">room.booking</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_reserve" string="Reserve"
+                            invisible="state != 'draft'" type="object"
+                            class="btn-primary"/>
+                    <button name="action_checkin" string="Check-In"
+                            class="btn-primary"
+                            invisible="is_checkin == True or (state in ['check_in','check_out','done','cancel'])"
+                            type="object"/>
+                    <button name="action_maintenance_request"
+                            string="Maintenance Request" type="object"
+                            class="btn-primary"
+                            invisible=" maintenance_request_sent == True or ( state not in ['check_in', 'reserved'])"/>
+                    <button name="action_checkout" string="Check-Out"
                             class="btn-primary" invisible="state != 'check_in'"
                             type="object"/>
               <button name="action_done"
@@ -101,30 +105,28 @@
         </form>
       </field>
     </record>
-
-<!--      tree View-->
-      <record id="room_booking_view_tree" model="ir.ui.view">
-          <field name="name">room.booking.view.tree</field>
-          <field name="model">room.booking</field>
-          <field name="arch" type="xml">
-              <tree>
-                  <field name="name"/>
-                  <field name="partner_id"/>
-                  <field name="date_order"/>
-                  <field name="state"/>
-              </tree>
-          </field>
-      </record>
-<!--      room booking menu action-->
-      <record id="room_booking_action" model="ir.actions.act_window">
-          <field name="name">Room Booking</field>
-          <field name="type">ir.actions.act_window</field>
-          <field name="res_model">room.booking</field>
-          <field name="view_mode">tree,form</field>
-      </record>
-
-<!--      Reservation Menu-->
-      <menuitem id="room_booking_menu" name="Reservation" sequence="10" parent="hotel_management_menu_root" action="room_booking_action">
-      </menuitem>
-  </data>
+    <!--     Room Booking Tree view -->
+    <record id="room_booking_view_tree" model="ir.ui.view">
+        <field name="name">room.booking.view.tree</field>
+        <field name="model">room.booking</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="date_order"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <!--     Room Booking Menu action -->
+    <record id="room_booking_action" model="ir.actions.act_window">
+        <field name="name">Room Booking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">room.booking</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!--     Reservation menu -->
+    <menuitem id="room_booking_menu" name="Reservation" sequence="10"
+              parent="hotel_management_menu_root"
+              action="room_booking_action"/>
 </odoo>
