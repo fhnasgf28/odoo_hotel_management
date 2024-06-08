@@ -22,6 +22,7 @@ Long description of module's purpose
 
     # always loaded
     'data': [
+        # 'security/hotel_management_groups.xml',
         'security/ir.model.access.csv',
         'data/ir_data_sequence.xml',
         'views/room_booking_views.xml',

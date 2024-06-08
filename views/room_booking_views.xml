@@ -53,13 +53,13 @@
                 <field name="maintenance_request_sent" invisible="1"/>
                 <group>
                     <field name="partner_id"
-                           widget="res_partner_many2one"
-                           options="{'always_reload': True}"/>
-<!--                    <field name="user_id"-->
-<!--                           options="{'always_reload': True}"/>-->
-                    <!--                           domain="[{'parent_id', '=',partner_id}]"-->
-                    <!--                           context="{'default_type':'invoice'}"-->
-                    <!--                           context="{'res_partner_search_mode': 'customer}"-->
+                                   widget="res_partner_many2one"
+                                   context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}"
+                                   options="{'always_reload': True}"/>
+                            <field name="user_id"
+                                   domain="[('parent_id','=',partner_id)]"
+                                   context="{'default_type':'invoice'}"
+                                   options="{'always_reload': True}"/>
                 </group>
                <group>
                    <field name="date_order"/>
@@ -72,34 +72,68 @@
             </group>
             <notebook>
                 <page name="folio" string="Folio">
-                    <field name="room_line_ids" colspan="4" string="Room Lines">
-<!--                        context-->
-                        <tree editable="bottom">
-                            <field name="room_id" string="Room"
-                                   required="1"
-                                   domain="[('is_room_avail', '=',True)]"
-                                   />
-                            <field name="checkin_date"/>
-                            <field name="booking_line_visible" invisible="1"/>
-                            <field name="checkout_date"/>
-                            <field name="uom_qty" string="Duration" readonly="1" force_save="1"/>
-                            <field name="uom_id"
-                                   readonly="booking_line_visible == True"
-                                   string="Unit Of Measure"
-                                   options="{'no_open': True, 'no_create': True}"/>
-                            <field name="price_unit"
-                                   readonly="booking_line_visible == True"/>
-                            <field name="tax_ids"
-                                   readonly="booking_line_visible == True"
-                                   options="{'no_create':True}"
-                                   widget="many2many_tags"/>
-                            <field name="price_subtotal" widget="monetary"
-                                   readonly="booking_line_visible == True"/>
-                            <field groups="account.group_account_manager" name="price_total"
-                                   widget="monetary" readonly="booking_line_visible == True"/>
-                        </tree>
-                    </field>
-                </page>
+                            <field name="room_line_ids" colspan="4"
+                                   string="Room Lines"
+                                   context="{'default_checkin_date':checkin_date, 'default_checkout_date':checkout_date, 'default_uom_qty':duration}">
+                                <tree editable="bottom">
+                                    <field name="room_id" string="Room"
+                                           required="1"
+                                           domain="[('is_room_avail','=',True)]"
+                                           options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="checkin_date"/>
+                                    <field name="booking_line_visible"
+                                           invisible="1"/>
+                                    <field name="checkout_date"/>
+                                    <field name="uom_qty" string="Duration"
+                                           readonly="1" force_save="1"/>
+                                    <field name="uom_id"
+                                           readonly="booking_line_visible == True"
+                                           string="Unit of Measure"
+                                           options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="price_unit"
+                                           readonly="booking_line_visible == True"/>
+                                    <field name="tax_ids"
+                                           readonly="booking_line_visible == True "
+                                           options="{'no_create': True}"
+                                           widget="many2many_tags"/>
+                                    <field name="price_subtotal"
+                                           widget="monetary"
+                                           readonly="booking_line_visible == True"/>
+                                    <field groups="account.group_account_manager"
+                                           name="price_total" widget="monetary"
+                                           readonly="booking_line_visible == True"/>
+                                </tree>
+                            </field>
+                            <group colspan="2"
+                                   class="oe_subtotal_footer oe_right">
+                                <field name="amount_untaxed_room"
+                                       sum="Untaxed amount for Room"
+                                       widget="monetary"/>
+                                <field name="amount_untaxed_food"
+                                       sum="Untaxed amount for Food"
+                                       widget="monetary"
+                                       invisible="need_food == False"/>
+                                <field name="amount_untaxed_service"
+                                       sum="Untaxed amount for Service"
+                                       widget="monetary"
+                                       invisible="need_service == False"/>
+                                <field name="amount_untaxed_fleet"
+                                       sum="Untaxed amount for Fleet"
+                                       widget="monetary"
+                                       invisible="need_fleet == False"/>
+                                <field name="amount_untaxed_event"
+                                       sum="Untaxed amount for Event"
+                                       widget="monetary"
+                                       invisible="need_event == False"/>
+                                <field name="amount_untaxed"
+                                       sum="Untaxed amount" widget="monetary"/>
+                                <field name="amount_tax" widget="monetary"/>
+                                <label for="amount_total"/>
+                                <field name="amount_total" nolabel="1"
+                                       sum="Total amount" widget="monetary"/>
+                            </group>
+                            <div class="oe_clear"/>
+                        </page>
             </notebook>
           </sheet>
         </form>

@@ -36,13 +36,13 @@ class RoomBookingLine(models.Model):
     price_unit = fields.Float(related='room_id.list_price', string='Rent',
                               digits='Product Price',
                               help="The rent price of the selected room.")
-    # tax_ids = fields.Many2many('account.tax',
-    #                            'hotel_room_order_line_taxes_rel',
-    #                            'room_id', 'tax_id',
-    #                            related='room_id.taxes_ids',
-    #                            string='Taxes',
-    #                            help="Default taxes used when selling the room."
-    #                            , domain=[('type_tax_use', '=', 'sale')])
+    tax_ids = fields.Many2many('account.tax',
+                               'hotel_room_order_line_taxes_rel',
+                               'room_id', 'tax_id',
+                               string='Taxes',
+                               help="Default taxes used when selling the room."
+                               , domain=[('type_tax_use', '=', 'sale')])
+    # related
     currency_id = fields.Many2one(string='Currency',
                                   related='booking_id.pricelist_id.currency_id'
                                   , help='The currency used')

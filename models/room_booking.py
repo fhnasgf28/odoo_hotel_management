@@ -77,7 +77,10 @@ class RoomBooking(models.Model):
     #                                            " it will included in the "
     #                                            "main invoice.", )
     user_id = fields.Many2one(comodel_name='res.partner', string="Invoice", compute='_compute_user_id',
-                              help='sets the User Automatically', required=True, )  #ada domain
+                              help='sets the User Automatically', required=True,
+                              domain="['|', ('company_id', '=', False), "
+                                     "('company_id', '=',"
+                                     " company_id)]")
     pricelist_id = fields.Many2one(comodel_name='product.pricelist', string='Pricelist',
                                    compute='_compute_pricelist_id', store=True, readonly=False, required=True,
                                    tracking=1, help="If you change the pricelist,"
@@ -92,21 +95,59 @@ class RoomBooking(models.Model):
                                      store=True)
     amount_total = fields.Monetary(string="Total", store=True, help="The total Amount including Tax",
                                    compute='_compute_amount_untaxed', tracking=4)
-    amount_untaxed_room = fields.Monetary(string="Room Untaxed", help='Untaxed Amount for Room',
-                                          compute='_compute_amount_untaxed', tracking=5)
-    amount_untaxed_food = fields.Monetary(string='Event Tax', help='Tax for event', compute='_compute_amount_untaxed',
+    amount_untaxed_service = fields.Monetary(
+        string="Service Untaxed", help="Untaxed Amount for Service",
+        compute='_compute_amount_untaxed', tracking=5)
+    amount_untaxed_fleet = fields.Monetary(string="Amount Untaxed",
+                                           help="Untaxed amount for Fleet",
+                                           compute='_compute_amount_untaxed',
+                                           tracking=5)
+    amount_taxed_room = fields.Monetary(string="Rom Tax", help="Tax for Room",
+                                        compute='_compute_amount_untaxed',
+                                        tracking=5)
+    amount_untaxed_room = fields.Monetary(string="Room Untaxed",
+                                          help="Untaxed Amount for Room",
+                                          compute='_compute_amount_untaxed',
                                           tracking=5)
-    amount_taxed_event = fields.Monetary(string='Event Tax', help='Tax For Event', compute='_compute_amount_untaxed',
+    amount_untaxed_food = fields.Monetary(string="Food Untaxed",
+                                          help="Untaxed Amount for Food",
+                                          compute='_compute_amount_untaxed',
+                                          tracking=5)
+    amount_untaxed_event = fields.Monetary(string="Event Untaxed",
+                                           help="Untaxed Amount for Event",
+                                           compute='_compute_amount_untaxed',
+                                           tracking=5)
+    amount_taxed_food = fields.Monetary(string="Food Tax", help="Tax for Food",
+                                        compute='_compute_amount_untaxed',
+                                        tracking=5)
+    amount_taxed_event = fields.Monetary(string="Event Tax",
+                                         help="Tax for Event",
+                                         compute='_compute_amount_untaxed',
                                          tracking=5)
-    amount_taxed_service = fields.Monetary(string='Service Tax', compute='_compute_amount_untaxed')
-    amount_taxed_fleet = fields.Monetary(string='Fleet Tax', compute='_compute_amount_untaxed',
-                                         help='This is the Total Amount for''Room', tracking=5)
-    amount_total_event = fields.Monetary(string='Total Amount for Event', compute='_compute_amount_untaxed',
+    amount_taxed_service = fields.Monetary(string="Service Tax",
+                                           compute='_compute_amount_untaxed',
+                                           help="Tax for Service", tracking=5)
+    amount_taxed_fleet = fields.Monetary(string="Fleet Tax",
+                                         compute='_compute_amount_untaxed',
+                                         help="Tax for Fleet", tracking=5)
+    amount_total_room = fields.Monetary(string="Total Amount for Room",
+                                        compute='_compute_amount_untaxed',
+                                        help="This is the Total Amount for "
+                                             "Room", tracking=5)
+    amount_total_food = fields.Monetary(string="Total Amount for Food",
+                                        compute='_compute_amount_untaxed',
+                                        help="This is the Total Amount for "
+                                             "Food", tracking=5)
+    amount_total_event = fields.Monetary(string="Total Amount for Event",
+                                         compute='_compute_amount_untaxed',
                                          help="This is the Total Amount for "
                                               "Event", tracking=5)
-    amount_total_service = fields.Monetary(string='Total Amount for Service', compute='_compute_amount_untaxed',
-                                           help='This is the Total Amount for''Fleet', tracking=5)
-    amount_total_fleet = fields.Monetary(string='Total Amount for Fleet', compute='_compute_amount_untaxed',
+    amount_total_service = fields.Monetary(string="Total Amount for Service",
+                                           compute='_compute_amount_untaxed',
+                                           help="This is the Total Amount for "
+                                                "Service", tracking=5)
+    amount_total_fleet = fields.Monetary(string="Total Amount for Fleet",
+                                         compute='_compute_amount_untaxed',
                                          help="This is the Total Amount for "
                                               "Fleet", tracking=5)
 
@@ -118,39 +159,41 @@ class RoomBooking(models.Model):
             vals_list['name'] = self.env['ir.sequence'].next_by_code('room.booking')
         return super().create(vals_list)
 
+    @api.depends('partner_id')
     def _compute_user_id(self):
         '''Compute the user id'''
         for order in self:
             order.user_id = \
                 order.partner_id.address_get(['invoice'])[
                     'invoice'] if order.partner_id else False
+
     def action_view_invoices(self):
-        return
+        pass
 
     #     action reserve
     def action_reserve(self):
-        return
+        pass
 
     def action_cancel(self):
-        return
+        pass
 
     #     action check-in
     def action_checkin(self):
-        return
+        pass
 
     # action maintenance request
     def action_maintenance_request(self):
-        return
+        pass
 
     # amount total
     def _compute_amount_untaxed(self):
-        return
+        pass
 
     def action_done(self):
-        return
+        pass
 
     def action_checkout(self):
-        return
+        pass
 
     def action_invoice(self):
-        return
+        pass
