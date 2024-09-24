@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+<!--    cleaning request tree view-->
+    <record id="cleaning_request_view_tree" model="ir.ui.view">
+        <field name="name">cleaning.request.view.tree</field>
+        <field name="model">cleaning.request</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence"/>
+                <field name="cleaning_type"/>
+                <field name="team_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+<!--    cleaning request form view-->
+    <record id="cleaning_request_view_form" model="ir.ui.view">
+        <field name="name">cleaning.request.view.form</field>
+        <field name="model">cleaning.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+<!--                        ada group yang perlu di tambahkan-->
+                    <button name="action_assign_cleaning"
+                            string="Assign To"
+                            invisible="state != 'draft'"
+                            type="object"
+                            class="btn-primary"/>
+                    <button name="action_start_cleaning"
+                            string="Start"
+                            type="object"
+                            invisible="state != 'assign'"
+                            class="btn-primary"/>
+                    <button name="action_done_cleaning"
+                            string="Completed"
+                            invisible="state != 'ongoing"
+                            type="object"
+                            class="btn-primary"/>
+                    <button name="action_maintain_request"
+                            string="Maintain Request"
+                            invisible="state != ongoing"
+                            type="object"
+                            class="btn-primary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft, ongoing,done"/>
+                    <button name="action_assign_support"
+                            string="Request Support"
+                            invisible="state != 'ongoing'" type="object"
+                            groups="hotel_management_odoo.cleaning_team_group_user"
+                            class="btn-primary"/>
+                    <button name="action_assign_assign_support"
+                            string="Assign Support"
+                            groups="hotel_management_odoo.cleaning_team_group_head"
+                            invisible="state != 'support'" type="object"
+                            class="btn-primary"/>
+
+                </header>
+                <sheet>
+                    <h2>
+                        <field name="sequence"/>
+                    </h2>
+                    <group>
+                        <group>
+                            <field name="team_id"/>
+                            <field name="cleaning_type"/>
+                            <field name="room_id" invisible="cleaning_type != 'room'"/>
+                            <field name="hotel" invisible="cleaning_type != 'hotel'"/>
+                            <field name="vehicle_id" invisible="cleaning_type != 'vehicle'"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+</odoo>
