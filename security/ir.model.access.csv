@@ -5,3 +5,5 @@ access_hotel_service_user,access.hotel.service.user,model_hotel_service,base.gro
 access_room_hotel_user,access.room.hotel.user,model_hotel_room,base.group_user,1,1,1,1
 access_hotel_floor_user,access.hotel.floor.user,model_hotel_floor,base.group_user,1,1,1,1
 access_hotel_amenity,access.hotel.amenity.user,model_hotel_amenity,base.group_user,1,1,1,1
+
+access_cleaning_request_cleaning_team_group_head,access.cleaning.request.cleaning_team_group_head,model_cleaning_request,,1,1,1,1
