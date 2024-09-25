@@ -37,3 +37,43 @@ class CleaningRequest(models.Model):
     head_id = fields.Many2one('res.users', string='Head', related='team_id.team_head_id', help="Head of cleaning team")
     assigned_id = fields.Many2one('res.users', string="Assigned To")
     domain_partner_ids = fields.Many2many('res.partner', string='Domain Partner')
+
+    def action_assign_cleaning(self):
+        self.update({'state': 'assign'})
+
+    def action_start_cleaning(self):
+        self.write({'state': 'ongoing'})
+
+    def action_done_cleaning(self):
+        self.write({'state': 'done'})
+
+    def action_assign_support(self):
+        if self.support_reason:
+            self.write({'state': 'support'})
+        else:
+            raise ValidationError(_('Please Enter the reason'))
+
+    def action_assign_assign_support(self):
+        if self.support_team_ids:
+            self.write({'state': 'ongoing'})
+        else:
+            raise ValidationError(_('Please Choose a support'))
+
+    def action_maintain_request(self):
+        self.env['maintenance.request'].sudo().create({
+            'date': fields.Date.today(),
+            'state': 'draft',
+            'type': self.cleaning_type,
+            'vehicle_maintenance_id': self.vehicle_id.id
+        })
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'type': 'success',
+                'message': 'Maintenance Request Sent Successfully',
+                'next': {'type': 'ir.actions.act_window_close'},
+            }
+        }
+
+

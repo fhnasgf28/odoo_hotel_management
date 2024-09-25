@@ -34,23 +34,21 @@
                             class="btn-primary"/>
                     <button name="action_done_cleaning"
                             string="Completed"
-                            invisible="state != 'ongoing"
+                            invisible="state != 'ongoing'"
                             type="object"
                             class="btn-primary"/>
                     <button name="action_maintain_request"
                             string="Maintain Request"
-                            invisible="state != ongoing"
+                            invisible="state != 'ongoing'"
                             type="object"
                             class="btn-primary"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft, ongoing,done"/>
                     <button name="action_assign_support"
                             string="Request Support"
                             invisible="state != 'ongoing'" type="object"
-                            groups="hotel_management_odoo.cleaning_team_group_user"
                             class="btn-primary"/>
                     <button name="action_assign_assign_support"
                             string="Assign Support"
-                            groups="hotel_management_odoo.cleaning_team_group_head"
                             invisible="state != 'support'" type="object"
                             class="btn-primary"/>
 

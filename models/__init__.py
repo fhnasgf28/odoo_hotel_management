@@ -1,7 +1,7 @@
 from . import account_move
 from . import account_move_line
-# from . import cleaning_request
-# from . import cleaning_team
+from . import cleaning_request
+from . import cleaning_team
 # from . import event_booking_line
 # from . import fleet_booking_line
 from . import fleet_vehicle_model
