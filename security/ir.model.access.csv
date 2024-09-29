@@ -7,3 +7,6 @@ access_hotel_floor_user,access.hotel.floor.user,model_hotel_floor,base.group_use
 access_hotel_amenity,access.hotel.amenity.user,model_hotel_amenity,base.group_user,1,1,1,1
 
 access_cleaning_request_cleaning_team_group_head,access.cleaning.request.cleaning_team_group_head,model_cleaning_request,,1,1,1,1
+access_cleaning_team_cleaning_team_group_head,access.cleaning.team.cleaning_team_group_head,model_cleaning_team,,1,1,1,1
+access_maintenance_request_hotel_group_admin,access.maintenance.request.hotel_group_admin,model_maintenance_request,,1,1,1,1
+
